@@ -1,6 +1,4 @@
-# Telos Quasar Template (telos-template)
-
-A template for using Vue+Quasar to build a Telos webapp
+# Telos Oracle Dashboard
 
 ## Install the dependencies
 
@@ -19,7 +17,7 @@ yarn global add @quasar/cli
 cp .env.example .env
 ```
 ## Prep the environment
-From within the ui-template folder:
+From within the telos-oracle-dashboard folder:
 ```bash
 yarn
 ```
