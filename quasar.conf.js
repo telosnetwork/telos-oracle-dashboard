@@ -53,7 +53,9 @@ module.exports = function(/* ctx */) {
         NETWORK_EVM_RPC: process.env.NETWORK_EVM_RPC,
         NETWORK_EVM_CONTRACT: process.env.NETWORK_EVM_CONTRACT,
         NETWORK_EVM_CHAIN_ID: process.env.NETWORK_EVM_CHAIN_ID,
-        NETWORK_EVM_ENDPOINT: process.env.NETWORK_EVM_ENDPOINT
+        NETWORK_EVM_ENDPOINT: process.env.NETWORK_EVM_ENDPOINT,
+        ORACLE_CONTRACT: process.env.ORACLE_CONTRACT,
+        ORACLE_CONSUMER: process.env.ORACLE_CONSUMER,
       },
 
       // transpile: false,
