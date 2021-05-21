@@ -17,6 +17,18 @@ const routes = [
     path: "/streaming",
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/Streaming.vue") }]
+  },{
+    path: "/oracle",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [{ path: "", component: () => import("pages/Oracle.vue") }]
+  },{
+    path: "/oraclesimple",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [{ path: "", component: () => import("pages/OracleSimple.vue") }]
+  },{
+    path: "/leaderboard",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [{ path: "", component: () => import("pages/Leaderboard.vue") }]
   },
 
   // Always leave this as last one,
