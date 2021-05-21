@@ -12,11 +12,11 @@
         />
 
         <q-toolbar-title>
-          Telos Vue/Quasar App Template
+          Telos Oracles Demo
         </q-toolbar-title>
 
         <login-button></login-button>
-        <div>Quasar v{{ $q.version }}</div>
+        <div><!--Quasar v{{ $q.version }}--></div>
       </q-toolbar>
     </q-header>
 
@@ -28,7 +28,7 @@
     >
       <q-list>
         <q-item-label header class="text-grey-8">
-          Example pages
+          Demo Pages
         </q-item-label>
         <ExamplePage
           v-for="link in examplePages"
@@ -36,7 +36,7 @@
           v-bind="link"
         />
         <q-item-label header class="text-grey-8">
-          Essential Links
+          Project Links
         </q-item-label>
         <EssentialLink
           v-for="link in essentialLinks"
@@ -59,67 +59,44 @@ import LoginButton from "components/LoginButton.vue";
 
 const pagesData = [
   {
+    title: "Price Oracles",
+    caption: "Oracle price feeds streamed over hyperion",
+    icon: "online_prediction",
+    path: "/oracle"
+  },
+  {
+    title: "Simplified Price Oracles",
+    caption: "Simplified example of price data feed from store",
+    icon: "book",
+    path: "/oraclesimple"
+  },
+  {
+    title: "Oracles Leaderboard",
+    caption: "Leaderboards for oracle counts",
+    icon: "star",
+    path: "/leaderboard"
+  },
+  {
     title: "Account",
     caption: "Account profile and Hyperion history query example",
     icon: "face",
     path: "/account/exampleuser1"
   },
-  {
-    title: "Transfer",
-    caption: "Transfer example, sending/signing actions",
-    icon: "send",
-    path: "/transfer"
-  },
-  {
-    title: "Streaming",
-    caption: "Hyperion event streaming example",
-    icon: "filter_alt",
-    path: "/streaming"
-  }
 ];
 
 const linksData = [
   {
-    title: "Use this template!",
-    caption: "github.com/telosnetwork/ui-template",
-    icon: "fas fa-rocket",
-    link: "https://github.com/telosnetwork/ui-template"
-  },{
-    title: "Telos Github",
-    caption: "github.com/telosnetwork",
+    title: "RNG Consumer Contract",
+    caption: "github.com/telosnetwork/rng-consumer",
     icon: "fab fa-github",
-    link: "https://github.com/telosnetwork"
+    link: "https://github.com/telosnetwork/rng-consumer"
   },
   {
-    title: "Telos Docs",
-    caption: "docs.telos.net",
-    icon: "menu_book",
-    link: "https://docs.telos.net"
+    title: "Telos Oracle RNG",
+    caption: "github.com/telosnetwork/telos-oracle-rng",
+    icon: "fab fa-github",
+    link: "https://github.com/telosnetwork/telos-oracle-rng"
   },
-  {
-    title: "Telos Dev Telegram",
-    caption: "t.me/dappstelos",
-    icon: "code",
-    link: "https://t.me/dappstelos"
-  },
-  {
-    title: "Telos Testnet Faucet",
-    caption: "app.telos.net/testnet/developers",
-    icon: "opacity",
-    link: "https://app.telos.net/testnet/developers"
-  },
-  {
-    title: "Quasar Docs",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "https://quasar.dev"
-  },
-  {
-    title: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev"
-  }
 ];
 
 export default {
