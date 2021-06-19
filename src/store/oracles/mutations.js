@@ -12,3 +12,18 @@ export const updatePriceFeeds = (state, pFeeds) => {
 
     state.priceFeeds = state.priceFeeds.slice(0, len);
 };
+
+export const updateRNGFeeds = (state, nRNG) => {
+    
+    if(state.bRNGFeeds == false)
+    { state.bRNGFeeds = true; }
+    
+    state.rngFeeds.unshift(nRNG);
+
+    var len = state.rngFeeds.length;
+
+    if(len > 20)
+    { len = 20; }
+
+    state.rngFeeds = state.rngFeeds.slice(0, len);
+};

@@ -2,7 +2,7 @@ export default function() {
     return {
       bPriceFeeds: false,
       priceFeeds: [],
-      buyRam: [], //temporary
+      bRNGFeeds: false,
       rngFeeds: [],
     };
   }

@@ -70,17 +70,23 @@ const pagesData = [
     icon: "book",
     path: "/oraclesimple"
   },
-  {
+  /*{
     title: "Oracles Leaderboard",
     caption: "Leaderboards for oracle counts",
     icon: "star",
     path: "/leaderboard"
+  },*/
+  {
+    title: "Telos Trail",
+    caption: "Random number oracles on Telos",
+    icon: "star",
+    path: "/rng"
   },
   {
-    title: "Account",
-    caption: "Account profile and Hyperion history query example",
-    icon: "face",
-    path: "/account/exampleuser1"
+    title: "Simplified RNG Data",
+    caption: "Accessing RNG data in store",
+    icon: "book",
+    path: "/rngsimple"
   },
 ];
 

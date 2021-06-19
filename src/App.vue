@@ -23,10 +23,13 @@ export default {
     };
   },
   methods: {
-    ...mapActions("oracles", ["updatePriceFeeds"]),
+    ...mapActions("oracles", ["updatePriceFeeds", "updateRNGFeeds"]),
 
     pFeedsUpdate (data) {
       this.updatePriceFeeds(data);
+    },
+    nRNGUpdate (data) {
+      this.updateRNGFeeds(data);
     },
 
     onDelta (data, ack) {
@@ -47,12 +50,13 @@ export default {
       fetch: fetch
     });
 
+
     this.client.onConnect = () => {
 
       this.client.streamActions({
-        contract: "delphioracle",
+        contract: process.env.ORACLE_CONTRACT,
         action: "write",
-        account: "delphioracle",
+        account: process.env.ORACLE_CONTRACT,
         start_from: moment
           .utc()
           .subtract(60*24, "minutes")
@@ -62,6 +66,19 @@ export default {
       });
 
       this.client.streamActions({
+        contract: process.env.ORACLE_CONSUMER,
+        action: "randreceipt",
+        account: process.env.ORACLE_CONSUMER,
+        start_from: moment
+          .utc()
+          .subtract(60*24, "minutes")
+          .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+        read_until: 0,
+        filters: []
+      });
+
+      //example of buyrambytes
+      /*this.client.streamActions({
         contract: "eosio",
         action: "buyrambytes",
         account: "eosio",
@@ -71,9 +88,10 @@ export default {
           .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
         read_until: 0,
         filters: []
-      });
+      });*/
 
-      this.client.streamDeltas({
+      //example of streamDeltas
+      /*this.client.streamDeltas({
         contract: "delphioracle",
         table: "stats",
         account: "delphioracle",
@@ -83,7 +101,20 @@ export default {
             .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
         read_until: 0,
         filters: []
-      });
+      });*/
+
+      /*
+      this.client.streamDeltas({
+        code: "eosio",
+        table: "producers",
+        scope: "eosio",
+        start_from: moment
+          .utc()
+          .subtract(60*24, "minutes")
+          .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+        read_until: 0,
+        filters: [],
+      });*/
 
     };
 
@@ -94,25 +125,32 @@ export default {
 
       let dataType = data.type;
       if (dataType == "action") {
+
+        //console.log("DATA --- " + data.content.act.name);
+
         if(data.content.act.name == "write") {
-          //this.$store.state.oracles.priceFeeds.unshift(data.content);
-          //this.updatePriceFeeds(data.content);
-          //console.log("STORE--");
-          //console.log(this.$store);
-          console.log("PRICE FEEDS");
+          //console.log("onData - Price Oracle Feed");
+
           this.pFeedsUpdate(data.content);
 
-          //this.$store.dispatch('updatePriceFeeds', data.content);
         } else if (data.content.act.name == "buyrambytes") {
-          //this.$store.state.oracles.buyRam[0] = data.content.act.data.receiver;
-          console.log("BUY RAM");
+          // console.log("onData - buyrambytes");
+        } else if (data.content.act.name == "randreceipt"){
+          // console.log("onData - RNG Oracle Update");
+          // console.log(JSON.stringify(data));
+
+          this.nRNGUpdate(data.content);
         }
-        else { console.log("OTHER"); }
+        else { console.log("onData - other stream action"); }
 
         ack();
       } else if(dataType == "delta") {
-        console.log("Delta HERE!");
+        console.log("onData - Table Delta Event");
+
         this.onDelta(data, ack);
+
+      } else {
+        console.log("onData - Misc Other");
       }
 
     };

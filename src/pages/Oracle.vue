@@ -8,7 +8,7 @@
 
     <div style="text-align: center; color: #fafafa;">
         Price oracles are streamed live from the blockchain using hyperion, with price updates occuring every few seconds.<br>
-        Contracts may access the data from the <a href="https://telos.bloks.io/account/delphioracle" target="_blank" style="color: #571aff;">delphioracle</a> contract.
+        Contracts may access the data from the <a href="https://telos.bloks.io/account/delphioracle" target="_blank" style="color: #571aff;">delphioracle</a> (MAIN NET) contract.
     </div>
 
   <canvas onmousemove='' onclick='' id='telosCanvas' style='border: none; background-color: #111; padding-left: 0; padding-right: 0; margin-left: auto; margin-right: auto; display: block;'>
@@ -48,8 +48,6 @@
     <img id="tmd" alt="" src="~assets/tmd.png" width="354" height="354" hidden/>
     <img id="tme" alt="" src="~assets/tme.png" width="354" height="354" hidden/>
 
-
-
     <audio id="blip1" autoplay="false" src="~assets/cc0/vgmenuhighlight.ogg" style="display: none;" />
     <audio id="lA" autoplay="false" src="~assets/cc0/cogs.ogg" style="display: none;" />
     <audio id="lB" autoplay="false" src="~assets/cc0/explode.ogg" style="display: none;" />
@@ -58,8 +56,6 @@
 
 <script>
 const moment = require("moment");
-//const HyperionSocketClient = require("@eosrio/hyperion-stream-client").default;
-//const fetch = require("node-fetch");
 
 export default {
   data() {
@@ -87,10 +83,6 @@ export default {
     };
   },
   methods: {
-    consoleOut () {
-      console.log(this.oracleTitle);
-      this.oracleTitle = "My New title";
-    },
     tImg(dim) {
       return (this.imgSize+1) * dim;
     },
@@ -223,6 +215,7 @@ export default {
               this.renderText( ctx, 60 - fade, iSpace - fade, "#fafafa", fSize2, nVal + " " + this.getPairText(priceFeeds[i].act.data.quotes[i2].pair));
               iSpace = iSpace + nSpacing - 24;
             }
+            
             iSpace = iSpace - (nSpacing - 24);
             iSpace = iSpace + nSpacing;
       }
@@ -235,14 +228,10 @@ export default {
         gRenderLoopForceStop = false;
       }
 
-      
-      if(this.bRenderCanvas){
-
-      //console.log(JSON.stringify(this.$store.state.oracles.priceFeeds[0]));
+      if(this.bRenderCanvas) {
       if(this.$store.state.oracles.priceFeeds != undefined) {
-        if(this.$store.state.oracles.priceFeeds.length > 0){
-          this.lastTimestamp = this.$store.state.oracles.priceFeeds[0]["@timestamp"];
-          //console.log(this.$store.state.oracles.priceFeeds[0]["@timestamp"]);
+        if(this.$store.state.oracles.priceFeeds.length > 0) {
+            this.lastTimestamp = this.$store.state.oracles.priceFeeds[0]["@timestamp"];
           }
       }
 
@@ -250,6 +239,7 @@ export default {
         var cw = $(canvas).width();
         var ch = $(canvas).height();
 
+      if(canvas !== null) {
         var ctx = canvas.getContext('2d');
 
         ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
@@ -267,8 +257,6 @@ export default {
         { lightBulb = 2; }
         else if (this.uCount > 0)
         { lightBulb = 1; }
-
-        //lightBulb = this.uCount % 3;
 
         var nRenderX = cw - this.tImg(177) - 10;
         var nRenderY = Math.floor(ch/2) - Math.floor(this.tImg(177)/2) - hSubtract;
@@ -325,9 +313,6 @@ export default {
               this.tImg(177));
           }
 
-          //countdown render
-          //this.renderText(ctx, 10, 15, "#fafafa", "12px Courier New", "Countdown: " + this.lCountdown + "  - " + this.lCounter);
-
           if(this.$store.state.oracles.bPriceFeeds == true) {
             this.renderOracles(canvas, ctx, this.$store.state.oracles.priceFeeds, nRenderX, nRenderY);
 
@@ -367,7 +352,8 @@ export default {
             
             this.renderText(ctx, dX, dY+dSpacerY, "#fafafa", dFont2, "block #"+this.$store.state.oracles.priceFeeds[0].block_num);
           }
-
+        }
+        
         var fRender = this.renderCanvas;
 
         setTimeout(function(){
