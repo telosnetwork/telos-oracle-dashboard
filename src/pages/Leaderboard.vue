@@ -1,54 +1,62 @@
 <template>
   <q-page class="column justify-center items-center">
-      <div class="text-h4">
-          Live Streaming Example
-      </div>
-      <div style="text-align: center">
-        This is the "cpu" action on the "eosmechanics" contract,<br> which benchmarks CPU performance of active BPs
-      </div>
-      <q-markup-table flat bordered>
-        <thead class="background: primary">
-          <tr>
-            <th class="text-right">Timestamp</th>
-            <th class="text-right">Oracle</th>
-            <th class="text-right">Update Count</th>
-            <th class="text-right">Balance</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="rngFeed in $store.state.oracles.rngFeeds" :key="rngFeed.global_sequence">
-            <td class="text-right">
-              {{
-                moment
-                  .utc(rngFeed['@timestamp'])
-                  .local()
-                  .format("dddd, MMMM Do YYYY, h:mm:ss a")
-              }}
-            </td>
-            <td class="text-right">{{ rngFeed.owner }}</td>
-            <td class="text-right">
-              {{ rngFeed.count }}
-            </td>
-            <td class="text-right">
-              {{ rngFeed.balance }}
-            </td>
-          </tr>
-        </tbody>
-      </q-markup-table>
+    <div class="text-h4">
+      Top Oracles
+    </div>
+    <div style="text-align: center">
+      These are the oracles who have contributed the most data
+    </div>
+    <q-table
+      title="Oracles"
+      :data="leaders"
+      :columns="columns"
+      row-key="oracle"
+      @row-click="rowClick"
+      :pagination="{rowsPerPage: 10}"
+    >
+    </q-table>
   </q-page>
 </template>
 
 <script>
-
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      columns: [
+        {
+          name: "oracle",
+          required: true,
+          label: "Oracle",
+          align: "left",
+          field: "oracle",
+          sortable: true
+        },
+        {
+          name: "rng_count",
+          label: "RNG Count",
+          field: "rng_count",
+          sortable: true
+        },
+        {
+          name: "price_count",
+          label: "Price count",
+          field: "price_count",
+          sortable: true
+        }
+      ],
     };
+  },
+  methods: {
+    rowClick(evt, row) {
+      window.open(`${process.env.NETWORK_EXPLORER}/account/${row.oracle}`);
+    }
+  },
+  computed: {
+    ...mapGetters("oracles", ["leaders"])
   },
   mounted: function() {
   },
-  destroyed() {
-  }
+  destroyed() {}
 };
-
 </script>

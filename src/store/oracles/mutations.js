@@ -12,3 +12,7 @@ export const updatePriceFeeds = (state, pFeeds) => {
 
     state.priceFeeds = state.priceFeeds.slice(0, len);
 };
+
+export const setLeaderboard = (state, leaderboard) => {
+    state.leaderboard = leaderboard;
+}

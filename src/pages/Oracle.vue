@@ -8,7 +8,7 @@
 
     <div style="text-align: center; color: #fafafa;">
         Price oracles are streamed live from the blockchain using hyperion, with price updates occuring every few seconds.<br>
-        Contracts may access the data from the <a href="https://telos.bloks.io/account/delphioracle" target="_blank" style="color: #571aff;">delphioracle</a> contract.
+        Contracts may access the data from the <a :href="`${explorerUrl}/account/delphioracle`" target="_blank" style="color: #571aff;">delphioracle</a> contract.
     </div>
 
   <canvas onmousemove='' onclick='' id='telosCanvas' style='border: none; background-color: #111; padding-left: 0; padding-right: 0; margin-left: auto; margin-right: auto; display: block;'>
@@ -64,6 +64,7 @@ const moment = require("moment");
 export default {
   data() {
     return {
+      explorerUrl: process.env.NETWORK_EXPLORER,
       oracleTitle: "Telos Price Oracles",
       bRenderCanvas: false,
       moment,

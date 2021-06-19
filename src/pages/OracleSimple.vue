@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <tr v-for="priceFeed in $store.state.oracles.priceFeeds" :key="priceFeed.global_sequence">
-            <td class="text-left">{{ priceFeed.block_num }}</td>
+            <td @click='goToBlock(priceFeed.block_num)' class="text-left">{{ priceFeed.block_num }}</td>
             <td class="text-right">
               {{
                 moment
@@ -46,12 +46,15 @@ const moment = require("moment");
 export default {
   data() {
     return {
-      oracleTitle: "Simplified Price Oracle Data",
+      explorerUrl: process.env.NETWORK_EXPLORER,
+      oracleTitle: "Live Price Oracle Data",
       moment
     };
   },
   methods: {
-    
+    goToBlock(blockNum) {
+      window.open(`${this.explorerUrl}/block/${blockNum}`)
+    }
   },
   mounted: function() {
 

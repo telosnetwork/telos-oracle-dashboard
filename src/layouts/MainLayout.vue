@@ -59,8 +59,8 @@ import LoginButton from "components/LoginButton.vue";
 
 const pagesData = [
   {
-    title: "Price Oracles",
-    caption: "Oracle price feeds streamed over hyperion",
+    title: "Visualized Price Oracles",
+    caption: "Watch the price feeds come in",
     icon: "online_prediction",
     path: "/oracle"
   },
@@ -77,10 +77,10 @@ const pagesData = [
     path: "/leaderboard"
   },
   {
-    title: "Account",
-    caption: "Account profile and Hyperion history query example",
-    icon: "face",
-    path: "/account/exampleuser1"
+    title: "Random Number Generator",
+    caption: "Request a random number from the RNG oracles",
+    icon: "pin",
+    path: "/requestrng"
   },
 ];
 

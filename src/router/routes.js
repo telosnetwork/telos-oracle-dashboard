@@ -5,9 +5,9 @@ const routes = [
     children: [{ path: "", component: () => import("pages/Index.vue") }]
   },
   {
-    path: "/account/:accountName",
+    path: "/requestrng",
     component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/Account.vue") }]
+    children: [{ path: "", component: () => import("pages/RequestRNG.vue") }]
   },
   {
     path: "/transfer",

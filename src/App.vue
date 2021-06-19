@@ -4,7 +4,6 @@
   </div>
 </template>
 <script>
-
 import { mapGetters, mapActions } from "vuex";
 
 //import store from './vuex/store'
@@ -14,7 +13,7 @@ const HyperionSocketClient = require("@eosrio/hyperion-stream-client").default;
 const fetch = require("node-fetch");
 
 export default {
-  name: 'App',
+  name: "App",
   data() {
     return {
       client: null,
@@ -23,109 +22,100 @@ export default {
     };
   },
   methods: {
-    ...mapActions("oracles", ["updatePriceFeeds"]),
+    ...mapActions("oracles", ["updatePriceFeeds", "loadLeaderboards"]),
 
-    pFeedsUpdate (data) {
-      this.updatePriceFeeds(data);
+    onAction(data) {
+      if (data.content.act.name == "write") {
+        this.updatePriceFeeds(data.content);
+      }
     },
 
-    onDelta (data, ack) {
-      console.log("delta found...");
-      //console.log(data.content.act.name);
-      console.log(data);
+    onDelta(data) {},
 
+    async loadTableData() {
+      await this.loadLeaderboards();
+    },
 
-      ack();
-    }
-  },
-  mounted: function() {
+    setupStreamClient() {
+      if (this.client) return;
 
-    if(this.client) return;
-
-    this.client = new HyperionSocketClient(process.env.HYPERION_ENDPOINT, {
-      async: true,
-      fetch: fetch
-    });
-
-    this.client.onConnect = () => {
-
-      this.client.streamActions({
-        contract: "delphioracle",
-        action: "write",
-        account: "delphioracle",
-        start_from: moment
-          .utc()
-          .subtract(60*24, "minutes")
-          .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
-        read_until: 0,
-        filters: []
+      this.client = new HyperionSocketClient(process.env.HYPERION_ENDPOINT, {
+        async: true,
+        fetch: fetch
       });
 
-      this.client.streamActions({
-        contract: "eosio",
-        action: "buyrambytes",
-        account: "eosio",
-        start_from: moment
-          .utc()
-          .subtract(60*24, "minutes")
-          .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
-        read_until: 0,
-        filters: []
-      });
-
-      this.client.streamDeltas({
-        contract: "delphioracle",
-        table: "stats",
-        account: "delphioracle",
-        start_from: moment
+      this.client.onConnect = () => {
+        this.client.streamActions({
+          contract: "delphioracle",
+          action: "write",
+          account: "delphioracle",
+          start_from: moment
             .utc()
-            .subtract(60*24, "minutes")
+            .subtract(24, "hours")
             .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
-        read_until: 0,
-        filters: []
-      });
+          read_until: 0,
+          filters: []
+        });
 
-    };
+        this.client.streamDeltas({
+          code: "delphioracle",
+          table: "stats",
+          scope: "delphioracle",
+          start_from: moment
+            .utc()
+            .subtract(24, "hours")
+            .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+          read_until: 0,
+          filters: []
+        });
 
-    this.client.onData = async (data, ack) => {
-      //console.log("data found...");
-      //console.log(data.content.act.name);
-      //console.log(data);
+        this.client.streamActions({
+          contract: "oracle.rng",
+          action: "submitrand",
+          account: "*",
+          start_from: moment
+            .utc()
+            .subtract(24, "hours")
+            .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+          read_until: 0,
+          filters: []
+        });
 
-      let dataType = data.type;
-      if (dataType == "action") {
-        if(data.content.act.name == "write") {
-          //this.$store.state.oracles.priceFeeds.unshift(data.content);
-          //this.updatePriceFeeds(data.content);
-          //console.log("STORE--");
-          //console.log(this.$store);
-          console.log("PRICE FEEDS");
-          this.pFeedsUpdate(data.content);
+        this.client.streamDeltas({
+          code: "oracle.rng",
+          table: "oracles",
+          scope: "",
+          start_from: 0,
+          read_until: 0,
+          filters: []
+        });
+      };
 
-          //this.$store.dispatch('updatePriceFeeds', data.content);
-        } else if (data.content.act.name == "buyrambytes") {
-          //this.$store.state.oracles.buyRam[0] = data.content.act.data.receiver;
-          console.log("BUY RAM");
+      this.client.onData = async (data, ack) => {
+        let dataType = data.type;
+        if (dataType == "action") {
+          this.onAction(data);
+        } else if (dataType == "delta") {
+          this.onDelta(data);
         }
-        else { console.log("OTHER"); }
 
         ack();
-      } else if(dataType == "delta") {
-        console.log("Delta HERE!");
-        this.onDelta(data, ack);
-      }
+      };
 
-    };
-
-    this.client.connect(() => {
-      console.log("Connected to Hyperion Stream!");
-    });
+      this.client.connect(() => {
+        console.log("Connected to Hyperion Stream!");
+      });
+    }
+  },
+  mounted: async function() {
+    await this.loadTableData();
+    this.setupStreamClient();
   },
 
   destroyed() {
-   if (this.client) this.client.disconnect();
+    if (this.client) this.client.disconnect();
 
     this.client = null;
   }
-}
+};
 </script>

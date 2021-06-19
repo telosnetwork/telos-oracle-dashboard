@@ -77,7 +77,7 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
-    return { showLogin: false, error: null };
+    return { showLogin: false, error: null, explorerUrl: process.env.NETWORK_EXPLORER };
   },
   computed: {
     ...mapGetters("account", [
@@ -102,10 +102,8 @@ export default {
       window.open(url);
     },
     goToAccountPage() {
-      const accountPath = `/account/${this.accountName}`;
-      if (this.$router.currentRoute.path !== accountPath) {
-        this.$router.push({ path: accountPath });
-      }
+      const accountPath = `${this.explorerUrl}/account/${this.accountName}`;
+      window.open(accountPath);
     }
   },
   async mounted() {
