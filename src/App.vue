@@ -33,7 +33,6 @@ export default {
     },
 
     onDelta(data) {
-      debugger;
     },
 
     async loadTableData() {
