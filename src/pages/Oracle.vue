@@ -24,7 +24,7 @@
     <img id="imgGlowSmall_d" alt="" src="~assets/glow_SMALLd.png" width="177" height="177" hidden/>
     <img id="imgGlowSmall_e" alt="" src="~assets/glow_SMALLe.png" width="177" height="177" hidden/>
     <img id="imgGlowSmall_f" alt="" src="~assets/glow_SMALLf.png" width="177" height="177" hidden/>
-    
+
     <img id="imgOracleMed" alt="" src="~assets/o_med.png" width="354" height="354" hidden/>
     <img id="imgOracleMedb" alt="" src="~assets/o_medb.png" width="354" height="354" hidden/>
     <img id="imgOracleMedc" alt="" src="~assets/o_medc.png" width="354" height="354" hidden/>
@@ -48,8 +48,6 @@
     <img id="tmd" alt="" src="~assets/tmd.png" width="354" height="354" hidden/>
     <img id="tme" alt="" src="~assets/tme.png" width="354" height="354" hidden/>
 
-
-
     <audio id="blip1" autoplay="false" src="~assets/cc0/vgmenuhighlight.ogg" style="display: none;" />
     <audio id="lA" autoplay="false" src="~assets/cc0/cogs.ogg" style="display: none;" />
     <audio id="lB" autoplay="false" src="~assets/cc0/explode.ogg" style="display: none;" />
@@ -58,8 +56,6 @@
 
 <script>
 const moment = require("moment");
-//const HyperionSocketClient = require("@eosrio/hyperion-stream-client").default;
-//const fetch = require("node-fetch");
 
 export default {
   data() {
@@ -88,10 +84,6 @@ export default {
     };
   },
   methods: {
-    consoleOut () {
-      console.log(this.oracleTitle);
-      this.oracleTitle = "My New title";
-    },
     tImg(dim) {
       return (this.imgSize+1) * dim;
     },
@@ -181,7 +173,7 @@ export default {
       var fade = 0;
 
       for(var i=0; (i < priceFeeds.length) && (i < 6); i++){
-            
+
             if(i==0 && (this.fadeCount > 0))
             {
               this.fadeCount = this.fadeCount - 5;
@@ -214,9 +206,9 @@ export default {
               this.laserCount--;
             }
             this.renderText( ctx, 50 - fade, iSpace - fade, "#fafafa", fSize, priceFeeds[i].act.data.owner);
-            
+
             iSpace = iSpace + nSpacing - 24;
-            
+
             for(var i2=0; i2 < priceFeeds[i].act.data.quotes.length; i2++){
               nRawVal = priceFeeds[i].act.data.quotes[i2].value;
               nDiv = this.getDivisor(priceFeeds[i].act.data.quotes[i2].pair);
@@ -236,21 +228,20 @@ export default {
         gRenderLoopForceStop = false;
       }
 
-      
-      if(this.bRenderCanvas){
 
-      //console.log(JSON.stringify(this.$store.state.oracles.priceFeeds[0]));
-      if(this.$store.state.oracles.priceFeeds != undefined) {
-        if(this.$store.state.oracles.priceFeeds.length > 0){
-          this.lastTimestamp = this.$store.state.oracles.priceFeeds[0]["@timestamp"];
-          //console.log(this.$store.state.oracles.priceFeeds[0]["@timestamp"]);
+      if(this.bRenderCanvas) {
+
+        if (this.$store.state.oracles.priceFeeds != undefined) {
+          if (this.$store.state.oracles.priceFeeds.length > 0) {
+            this.lastTimestamp = this.$store.state.oracles.priceFeeds[0]["@timestamp"];
           }
-      }
+        }
 
         var canvas = document.getElementById("telosCanvas");
         var cw = $(canvas).width();
         var ch = $(canvas).height();
 
+      if(canvas !== null) {
         var ctx = canvas.getContext('2d');
 
         ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
@@ -258,21 +249,20 @@ export default {
         var hSubtract = (ch >= 690) ? 100 : 0;
         var lightBulb = 0;
 
-        if(this.uCount > 8)
-        { lightBulb = 1; }
-        else if (this.uCount > 5)
-        { lightBulb = 2; }
-        else if (this.uCount > 2)
-        { lightBulb = 1; }
-        else if (this.uCount > 1)
-        { lightBulb = 2; }
-        else if (this.uCount > 0)
-        { lightBulb = 1; }
-
-        //lightBulb = this.uCount % 3;
+        if (this.uCount > 8) {
+          lightBulb = 1;
+        } else if (this.uCount > 5) {
+          lightBulb = 2;
+        } else if (this.uCount > 2) {
+          lightBulb = 1;
+        } else if (this.uCount > 1) {
+          lightBulb = 2;
+        } else if (this.uCount > 0) {
+          lightBulb = 1;
+        }
 
         var nRenderX = cw - this.tImg(177) - 10;
-        var nRenderY = Math.floor(ch/2) - Math.floor(this.tImg(177)/2) - hSubtract;
+        var nRenderY = Math.floor(ch / 2) - Math.floor(this.tImg(177) / 2) - hSubtract;
 
         ctx.drawImage(
           this.imgOracle[this.imgSize][lightBulb],
@@ -280,11 +270,12 @@ export default {
           nRenderY,
           this.tImg(177),
           this.tImg(177));
-        
-        if(this.tCount > 1000)
-        { this.tCount = 0; }
+
+        if (this.tCount > 1000) {
+          this.tCount = 0;
+        }
         var tSel = this.tCount % 5;
-        this.tCount ++; 
+        this.tCount++;
 
         ctx.drawImage(
           this.imgT[this.imgSize][tSel],
@@ -293,81 +284,83 @@ export default {
           this.tImg(177),
           this.tImg(177));
 
-          this.lCountdown--;
-          if(this.lCountdown <= 0){
-            this.lCountdown = 0;
-            this.lCounter = 0;
+        this.lCountdown--;
+        if (this.lCountdown <= 0) {
+          this.lCountdown = 0;
+          this.lCounter = 0;
+        }
+
+        if (this.lCounter == 3) {
+          this.lCountdown = 0;
+          this.lCounter = 0;
+          this.lAnim = 15;
+        }
+
+        if (this.lAnim > 0) {
+          var nAnimVar = this.lAnim % 6;
+          this.lAnim--;
+
+          var nAdjLightning = this.imgSize == 0 ? 22 : 45;
+
+          if (nAnimVar == 5) {
+            $('#lA')[0].play();
+          }
+          if (this.lAnim == 1) {
+            $('#lB')[0].play();
           }
 
-          if(this.lCounter == 3){
-            this.lCountdown = 0;
-            this.lCounter = 0;
-            this.lAnim = 15;
+          ctx.drawImage(
+            this.imgLightning[this.imgSize][nAnimVar],
+            nRenderX + nAdjLightning,
+            nRenderY,
+            this.tImg(177),
+            this.tImg(177));
+        }
+
+        //countdown render
+        //this.renderText(ctx, 10, 15, "#fafafa", "12px Courier New", "Countdown: " + this.lCountdown + "  - " + this.lCounter);
+
+        if (this.$store.state.oracles.bPriceFeeds == true) {
+          this.renderOracles(canvas, ctx, this.$store.state.oracles.priceFeeds, nRenderX, nRenderY);
+
+          //render various text
+          var dFont = this.imgSize == 0 ? "16px Arial" : "32px Courier New";
+          var dFont2 = this.imgSize == 0 ? "12px Arial" : "24px Courier New";
+          var dX = this.imgSize == 0 ? nRenderX + 40 : 715;
+          var dY = this.imgSize == 0 ? nRenderY + 48 : 165;
+          var dSpacerY = this.imgSize == 0 ? 25 : 48;
+          this.renderText(ctx, dX, dY, "#fafafa", dFont, "delphioracle");
+
+          if (this.lastBlock != this.$store.state.oracles.priceFeeds[0].block_num) {
+            this.fadeCount = 30;
+            this.laserCount = 10;
+            this.yCounter = this.yCounter + 50;
+
+            $('#blip1')[0].play();
+
+            this.lCountdown = 100;
+            this.lCounter++;
+
+            this.uCount = 10;
+            this.oldBlock = this.lastBlock;
+            this.lastBlock = this.$store.state.oracles.priceFeeds[0].block_num;
+          } else {
+            if (this.yCounter > 0) {
+              this.yCounter = this.yCounter - 3;
+            }
+            this.renderText(ctx, dX, dY + dSpacerY, "#fafafa", dFont2, "block #" + this.$store.state.oracles.priceFeeds[0].block_num);
           }
 
-          if(this.lAnim > 0){
-            var nAnimVar = this.lAnim % 6;
-            this.lAnim--;
-
-            var nAdjLightning = this.imgSize == 0 ? 22 : 45;
-
-            if(nAnimVar == 5){
-              $('#lA')[0].play();
-            }
-            if(this.lAnim == 1){
-              $('#lB')[0].play();
-            }
-
-            ctx.drawImage(
-              this.imgLightning[this.imgSize][nAnimVar],
-              nRenderX + nAdjLightning,
-              nRenderY,
-              this.tImg(177),
-              this.tImg(177));
+          if (this.uCount > 0) {
+            ctx.globalAlpha = (0.9 * (this.uCount / 11));
+            this.renderText(ctx, dX + (22 - (this.uCount * 2)), dY + dSpacerY, "#c5b0ff", dFont2, "block #" + this.$store.state.oracles.priceFeeds[0].block_num);
+            ctx.globalAlpha = 1.0;
+            this.uCount--;
           }
 
-          //countdown render
-          //this.renderText(ctx, 10, 15, "#fafafa", "12px Courier New", "Countdown: " + this.lCountdown + "  - " + this.lCounter);
-
-          if(this.$store.state.oracles.bPriceFeeds == true) {
-            this.renderOracles(canvas, ctx, this.$store.state.oracles.priceFeeds, nRenderX, nRenderY);
-
-            //render various text
-            var dFont = this.imgSize == 0 ? "16px Arial" : "32px Courier New";
-            var dFont2 = this.imgSize == 0 ? "12px Arial" : "24px Courier New";
-            var dX = this.imgSize == 0 ? nRenderX + 40 : 715;
-            var dY = this.imgSize == 0 ? nRenderY + 48 : 165;
-            var dSpacerY = this.imgSize == 0 ? 25 : 48;
-            this.renderText(ctx, dX, dY, "#fafafa", dFont, "delphioracle");
-            
-            if(this.lastBlock != this.$store.state.oracles.priceFeeds[0].block_num){
-              this.fadeCount = 30;
-              this.laserCount = 10;
-              this.yCounter = this.yCounter + 50;
-
-              $('#blip1')[0].play();
-
-              this.lCountdown = 100;
-              this.lCounter++;
-
-              this.uCount = 10;
-              this.oldBlock = this.lastBlock;
-              this.lastBlock = this.$store.state.oracles.priceFeeds[0].block_num;
-            } else {
-              if(this.yCounter > 0)
-              { this.yCounter = this.yCounter - 3; }
-              this.renderText(ctx, dX, dY+dSpacerY, "#fafafa", dFont2, "block #"+this.$store.state.oracles.priceFeeds[0].block_num);
-            }
-
-            if(this.uCount > 0){
-              ctx.globalAlpha = (0.9 * (this.uCount / 11));
-              this.renderText(ctx, dX + (22-(this.uCount*2)), dY+dSpacerY, "#c5b0ff", dFont2, "block #"+this.$store.state.oracles.priceFeeds[0].block_num);
-              ctx.globalAlpha = 1.0;
-              this.uCount--;
-            }
-            
-            this.renderText(ctx, dX, dY+dSpacerY, "#fafafa", dFont2, "block #"+this.$store.state.oracles.priceFeeds[0].block_num);
-          }
+          this.renderText(ctx, dX, dY + dSpacerY, "#fafafa", dFont2, "block #" + this.$store.state.oracles.priceFeeds[0].block_num);
+        }
+      }
 
         var fRender = this.renderCanvas;
 
@@ -381,7 +374,7 @@ export default {
     this.bRenderCanvas = true;
 
     var fRender = this.renderCanvas;
-   
+
     gRenderLoopForceStop = true;
     setTimeout(function(){
       console.log("Start new render loop...");

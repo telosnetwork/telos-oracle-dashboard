@@ -1,5 +1,5 @@
 <template>
-  <q-page class="column justify-center items-center">
+  <q-page class="column justify-center items-center q-px-md">
     <h2>Request a random number</h2>
     <div v-if="isAuthenticated">
       <q-input
@@ -26,14 +26,14 @@
       />
       <q-btn size="xl" round dense flat icon="play_arrow" @click="send" />
       <div v-if="activeRequest">
-        <q-card>
+        <q-card row class="q-px-md">
           <q-card-section>
             <transition
               appear
               enter-active-class="animated fadeIn"
               leave-active-class="animated fadeOut"
             >
-              <h4 v-if="!isNaN(currentRequest.number)">
+              <h4 v-if="!isNaN(currentRequest.number)" @click="openTransaction(currentRequest.number_trx_id)">
                 Your random number is: {{ currentRequest.number }}
               </h4>
             </transition>
@@ -102,7 +102,7 @@
                 <q-item-label>{{
                   currentRequest.oracles[2].name
                 }}</q-item-label>
-                <q-item-label caption>{{
+                <q-item-label :lines="1" caption>{{
                   currentRequest.oracles[2].sig
                 }}</q-item-label>
               </q-item-section>
@@ -258,11 +258,12 @@ export default {
               trx_id: data.content.trx_id
             });
           } else {
+            this.currentRequest.number_trx_id = data.content.trx_id;
             this.currentRequest.number = actData.number;
           }
         } else if (dataType == "delta") {
           if (data.content.code == `${this.consumerContract}`) {
-            if (data.content.data.caller == this.accountName) {
+            if (data.content.present && data.content.data.caller == this.accountName) {
               this.currentRequest = {
                 ...data.content.data,
                 oracles: [],
@@ -326,6 +327,11 @@ export default {
   },
   mounted() {
     this.setupClient();
+  },
+  destroyed() {
+    if (this.client) this.client.disconnect();
+
+    this.client = null;
   }
 };
 </script>

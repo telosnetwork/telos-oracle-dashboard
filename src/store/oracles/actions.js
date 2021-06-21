@@ -9,7 +9,7 @@ export const loadLeaderboards = async function({ dispatch, commit }, pFeeds) {
             scope: "rng.oracle",
             table: "oracles",
           });
-      
+
       let currentLeaderboard = this.state.oracles.leaderboard;
       oracleResult.rows.forEach(row => {
             if (!currentLeaderboard.hasOwnProperty(row.oracle_name)) {
@@ -25,7 +25,7 @@ export const loadLeaderboards = async function({ dispatch, commit }, pFeeds) {
             scope: "delphioracle",
             table: "stats",
           });
-      
+
       priceResult.rows.forEach(row => {
             if (!currentLeaderboard.hasOwnProperty(row.owner)) {
                   currentLeaderboard[row.owner] = {};
@@ -38,4 +38,9 @@ export const loadLeaderboards = async function({ dispatch, commit }, pFeeds) {
 
 
       commit("setLeaderboard", currentLeaderboard);
+};
+
+export const updateRNGFeeds = async function({ dispatch, commit }, nRNG) {
+
+  commit("updateRNGFeeds", nRNG);
 };

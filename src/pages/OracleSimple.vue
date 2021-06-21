@@ -40,8 +40,6 @@
 
 <script>
 const moment = require("moment");
-//const HyperionSocketClient = require("@eosrio/hyperion-stream-client").default;
-//const fetch = require("node-fetch");
 
 export default {
   data() {

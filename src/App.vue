@@ -22,15 +22,19 @@ export default {
     };
   },
   methods: {
-    ...mapActions("oracles", ["updatePriceFeeds", "loadLeaderboards"]),
+    ...mapActions("oracles", ["updatePriceFeeds", "loadLeaderboards", "updateRNGFeeds"]),
 
     onAction(data) {
       if (data.content.act.name == "write") {
         this.updatePriceFeeds(data.content);
+      } else if (data.content.act.name == "randreceipt") {
+        this.updateRNGFeeds(data.content);
       }
     },
 
-    onDelta(data) {},
+    onDelta(data) {
+      debugger;
+    },
 
     async loadTableData() {
       await this.loadLeaderboards();
@@ -57,34 +61,31 @@ export default {
           filters: []
         });
 
+        this.client.streamActions({
+          contract: process.env.ORACLE_CONSUMER,
+          action: "randreceipt",
+          account: process.env.ORACLE_CONSUMER,
+          start_from: moment
+            .utc()
+            .subtract(24, "hours")
+            .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+          read_until: 0,
+          filters: []
+        });
+
+        this.client.streamDeltas({
+          code: "rng.oracle",
+          table: "oracles",
+          scope: "rng.oracle",
+          start_from: 0,
+          read_until: 0,
+          filters: []
+        });
+
         this.client.streamDeltas({
           code: "delphioracle",
           table: "stats",
           scope: "delphioracle",
-          start_from: moment
-            .utc()
-            .subtract(24, "hours")
-            .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
-          read_until: 0,
-          filters: []
-        });
-
-        this.client.streamActions({
-          contract: "oracle.rng",
-          action: "submitrand",
-          account: "*",
-          start_from: moment
-            .utc()
-            .subtract(24, "hours")
-            .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
-          read_until: 0,
-          filters: []
-        });
-
-        this.client.streamDeltas({
-          code: "oracle.rng",
-          table: "oracles",
-          scope: "",
           start_from: 0,
           read_until: 0,
           filters: []
@@ -107,7 +108,7 @@ export default {
       });
     }
   },
-  mounted: async function() {
+  created: async function() {
     await this.loadTableData();
     this.setupStreamClient();
   },

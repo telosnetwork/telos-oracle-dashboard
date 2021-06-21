@@ -79,8 +79,13 @@ const pagesData = [
   {
     title: "Random Number Generator",
     caption: "Request a random number from the RNG oracles",
-    icon: "pin",
+    icon: "room_preferences",
     path: "/requestrng"
+  },{
+    title: "Telos Trail",
+    caption: "Using RNG oracle to decide your fate!",
+    icon: "add_road",
+    path: "/telos-trail"
   },
 ];
 
@@ -96,6 +101,12 @@ const linksData = [
     caption: "github.com/telosnetwork/telos-oracle-rng",
     icon: "fab fa-github",
     link: "https://github.com/telosnetwork/telos-oracle-rng"
+  },
+  {
+    title: "This oracle dashboard",
+    caption: "github.com/telosnetwork/telos-oracle-dashboard",
+    icon: "fab fa-github",
+    link: "https://github.com/telosnetwork/telos-oracle-dashboard"
   },
 ];
 

@@ -8,8 +8,11 @@ const routes = [
     path: "/requestrng",
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/RequestRNG.vue") }]
-  },
-  {
+  },{
+    path: "/telos-trail",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [{ path: "", component: () => import("pages/RNG.vue") }]
+  },{
     path: "/transfer",
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/Transfer.vue") }]

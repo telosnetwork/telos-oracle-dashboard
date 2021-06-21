@@ -10,7 +10,6 @@ Vue.use(Vuex);
 export default function() {
   const Store = new Vuex.Store({
     state: {
-      text: "STATE DATA TEST -- AAB5"
     },
     modules: {
       general,
